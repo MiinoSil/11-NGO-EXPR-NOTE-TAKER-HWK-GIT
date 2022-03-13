@@ -5,7 +5,9 @@
 
 [GitHub REPO](https://github.com/MiinoSil/11-NGO-EXPR-NOTE-TAKER-HWK-GIT)
 
-[GitHub Hosted Page](https://miinosil.github.io/11-NGO-EXPR-NOTE-TAKER-HWK-GIT/)
+[HEROKU GIT REPO](https://git.heroku.com/ngo-express-note-taker-app.git)
+
+[HEROKU Hosted Page](https://ngo-express-note-taker-app.herokuapp.com/)
 
 
 ## Your Task
