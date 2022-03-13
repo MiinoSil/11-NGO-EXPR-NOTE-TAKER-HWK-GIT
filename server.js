@@ -12,7 +12,10 @@ const database = require("./database/database")
 const app = express();
 
 // Port is for localhost and HEROKU
-const PORT = process.env.PORT || 3001;
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
@@ -81,7 +84,7 @@ app.delete("/api/notes/:id", function (req, res) {
 
 
 // Calls server to listen to PORT.
-app.listen(PORT, function() {
-    console.log(`Listening on PORT ${PORT}`);
+app.listen(port, function() {
+    console.log(`Listening on PORT ${port}`);
 });
 
