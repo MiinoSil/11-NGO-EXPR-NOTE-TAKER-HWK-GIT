@@ -2,7 +2,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const database = require("./database/database")
+const database = require("./db/db")
 
 // // Establish routes to HTML
 // const apiRoutes = require("./routes/apiRoutes");
