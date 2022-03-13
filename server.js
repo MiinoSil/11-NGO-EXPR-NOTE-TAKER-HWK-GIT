@@ -2,7 +2,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const db = require("./db/db")
+const database = require("./database/database")
 
 // // Establish routes to HTML
 // const apiRoutes = require("./routes/apiRoutes");
@@ -28,16 +28,16 @@ app.get("/notes", function (req, res) {
 
 app.route("/api/notes")
     .get(function (req, res) {
-        res.json(db);
+        res.json(database);
     })
     .post(function (req, res) {
-        let jsonFilePath = path.join(__dirname, "/db/db.json");
+        let jsonFilePath = path.join(__dirname, "/database/database.json");
         let newNote = req.body;
 
         let oldestNote = 99;
 
-        for (let i = 0; i < db.length; i++) {
-            let note = db[i];
+        for (let i = 0; i < database.length; i++) {
+            let note = database[i];
             if (note.id > oldestNote) {
                 oldestNote = note.id;
             }
@@ -45,9 +45,9 @@ app.route("/api/notes")
 
         newNote.id = oldestNote + 1;
 
-        db.push(newNote)
+        database.push(newNote)
 
-        fs.writeFile(jsonFilePath, JSON.stringify(db), function(err) {
+        fs.writeFile(jsonFilePath, JSON.stringify(database), function(err) {
             if (err) {
                 return console.log(err);
             }
@@ -57,18 +57,18 @@ app.route("/api/notes")
     });
 
 app.delete("/api/notes/:id", function (req, res) {
-    let jsonFilePath = path.join(__dirname, "/db/db.json");
+    let jsonFilePath = path.join(__dirname, "/database/database.json");
 
-    for (let i = 0; i < db.length; i++) {
+    for (let i = 0; i < database.length; i++) {
 
-        if (db[i].id == req.params.id) {
+        if (database[i].id == req.params.id) {
 
-            db.splice(i, 1);
+            database.splice(i, 1);
             break;
         }
     }
 
-    fs.writeFileSync(jsonFilePath, JSON.stringify(db), function (err) {
+    fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
 
         if (err) {
             return console.log(err);
@@ -76,7 +76,7 @@ app.delete("/api/notes/:id", function (req, res) {
             console.log("Note deleted.");
         }
     });
-    res.json(db);
+    res.json(database);
 });
 
 
