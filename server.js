@@ -59,24 +59,24 @@ app.route("/api/notes")
 app.delete("/api/notes/:id", function (req, res) {
     let jsonFilePath = path.join(__dirname, "/db/db.json");
 
-    for (let i = 0; i < database.length; i++) {
+    for (let i = 0; i < db.length; i++) {
 
-        if (database[i].id == req.params.id) {
+        if (db[i].id == req.params.id) {
 
-            database.splice(i, 1);
+            db.splice(i, 1);
             break;
         }
     }
 
-    fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
+    fs.writeFileSync(jsonFilePath, JSON.stringify(db), function (err) {
 
         if (err) {
             return console.log(err);
         } else {
-            console.log("Your note was deleted!");
+            console.log("Note deleted.");
         }
     });
-    res.json(database);
+    res.json(db);
 });
 
 
