@@ -17,7 +17,6 @@
 [NPM Requirements](#npm-requirements)
 [Installation](#installation)
 [Usage](#usage)
-[Mock-up](#mock-up)
 [Credits](#credits)
 [License](#license)
 
@@ -52,15 +51,7 @@ npm install express
 npm start
 ```
 
-Then use browser to access localhost or use insomnia.
-
-## Mock-Up
-
-The following images show the web application's appearance and functionality:
-
-![Existing notes are listed in the left-hand column with empty fields on the right-hand side for the new note’s title and text.](./Assets/11-express-homework-demo-01.png)
-
-![Note titled “Balance accounts” reads, “Balance account books by end of day Monday,” with other notes listed on the left.](./Assets/11-express-homework-demo-02.png)
+Then use browser to access localhost:3001 or use insomnia.
 
 ## Credits 
 Made by Andrew Ngo
@@ -70,7 +61,7 @@ Made by Andrew Ngo
 ## License 
 
 
-Copyright (c) {{ 2022- }} {{ Andrew Ngo }}
+Copyright (c) {{ 2022 }} {{ Andrew Ngo }}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
