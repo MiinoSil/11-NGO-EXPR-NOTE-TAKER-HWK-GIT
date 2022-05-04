@@ -2,89 +2,74 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const database = require("./db/db")
-
-// // Establish routes to HTML
-// const apiRoutes = require("./routes/apiRoutes");
-// const HTMLRoutes = require("./routes/HTMLRoutes");
 
 // Call upon express middleware.
 const app = express();
 
 // Port is for localhost and HEROKU
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 8000;
-}
+let port = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+    res.sendFile(path.join(__dirname, "public/index.html"));
 })
 
 app.get("/notes", function (req, res) {
-    res.sendFile(path.join(__dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "public/notes.html"));
 })
 
-app.route("/api/notes")
-    .get(function (req, res) {
-        res.json(database);
-    })
-    .post(function (req, res) {
-        let jsonFilePath = path.join(__dirname, "/database/database.json");
-        let newNote = req.body;
+app.get("/api/notes", function(req, res) {
+    res.sendFile(path.join(__dirname, "db/db.json"));
+});
 
-        let oldestNote = 99;
-
-        for (let i = 0; i < database.length; i++) {
-            let note = database[i];
-            if (note.id > oldestNote) {
-                oldestNote = note.id;
-            }
+app.post("/api/notes", function(req, res) {
+    fs.readFile(path.join(__dirname, "db/db.json"), "utf8", function(error, response) {
+        if (error) {
+            console.log(error);
         }
-
-        newNote.id = oldestNote + 1;
-
-        database.push(newNote)
-
-        fs.writeFile(jsonFilePath, JSON.stringify(database), function(err) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log("Note saved.")
-        });
+        const notes = JSON.parse(response);
+        const noteReq = req.body;
+        const newNoteId = notes.length + 1;
+        const newNote = {
+            id: newNoteId,
+            title: noteReq.title,
+            text: noteReq.text
+        };
+        notes.push(newNote);
         res.json(newNote);
+        fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(notes, null, 2), function(err) {
+            if (err) throw err;
+        });
     });
+});
 
 app.delete("/api/notes/:id", function (req, res) {
-    let jsonFilePath = path.join(__dirname, "/database/database.json");
-
-    for (let i = 0; i < database.length; i++) {
-
-        if (database[i].id == req.params.id) {
-
-            database.splice(i, 1);
-            break;
+    const deleteId = req.params.id;
+    fs.readFile("db/db.json", "utf8", function(error, response) {
+        if (error) {
+            console.log(error);
         }
-    }
-
-    fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
-
-        if (err) {
-            return console.log(err);
+        let notes = JSON.parse(response);
+        if(deleteId <= notes.length) {
+            res.json(notes.splice(deleteId-1,1));
+            for (let i = 0; i < notes.length; i++) {
+                notes[i].id = i+1;
+            }
+            fs.writeFile("db/db.json", JSON.stringify(notes, null, 2), function(err) {
+                if (err) throw err;
+            });
         } else {
-            console.log("Note deleted.");
-        }
+            res.json(false);
+        };
     });
-    res.json(database);
 });
 
 
 // Calls server to listen to PORT.
 app.listen(port, function() {
-    console.log(`Listening on PORT ${port}`);
+    console.log(`Listening on PORT ${port} visit via browser http://localhost:${port}`);
 });
 

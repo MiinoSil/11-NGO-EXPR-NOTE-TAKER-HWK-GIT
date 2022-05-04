@@ -1,6 +1,12 @@
 [
-    {
-        "title":"Test Title",
-        "text":"Test text"
-    }
+  {
+    "id": 1,
+    "title": "First Note",
+    "text": "This is the first note, testing GET for seeded database"
+  },
+  {
+    "id": 2,
+    "title": "New note",
+    "text": "Testing POST of new note, does it write to the database?"
+  }
 ]
